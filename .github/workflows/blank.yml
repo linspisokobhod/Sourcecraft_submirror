@@ -1,0 +1,39 @@
+name: Upload Subscriptions to SourceCraft
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # Каждый час
+  workflow_dispatch:
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        pip install requests
+    
+    - name: Run upload script
+      env:
+        SOURCECRAFT_API_KEY: ${{ secrets.SOURCECRAFT_KEY }}
+      run: |
+        python upload_to_sourcecraft.py
+    
+    - name: Upload logs
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: upload-logs
+        path: |
+          *.log
+          subscriptions/*.txt
+        retention-days: 7
