@@ -24,7 +24,7 @@ jobs:
     
     - name: Run upload script
       env:
-        SOURCECRAFT_API_KEY: ${{ secrets.SOURCECRAFT_KEY }}
+        SOURCECRAFT_KEY: ${{ secrets.SOURCECRAFT_KEY }}
       run: |
         python upload_to_sourcecraft.py
     
